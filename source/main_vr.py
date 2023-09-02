@@ -58,7 +58,7 @@ def InitVRControllers(vr_controller=None, vr_controller_idx=None):
 					vr_controller[0] = hg.VRController(name_template + str(i))
 					vr_controller_idx[0] = i
 					left_hand_connected = True
-					print("Using controller %1 for left hand" + str(i))
+					print(f"Using controller %1 for left hand{str(i)}")
 					break
 
 	if not right_hand_connected:
@@ -68,7 +68,7 @@ def InitVRControllers(vr_controller=None, vr_controller_idx=None):
 					vr_controller[1] = hg.VRController(name_template + str(i))
 					vr_controller_idx[1] = i
 					right_hand_connected = True
-					print("Using controller %1 for right hand" + str(i))
+					print(f"Using controller %1 for right hand{str(i)}")
 					break
 
 	return vr_controller, vr_controller_idx

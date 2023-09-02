@@ -1,10 +1,10 @@
 import harfang as hg
 
 def is_node_name_collision_enabled(node_name):
-	for name in ["g_block_", "start", "homebase", "colshape"]:
-		if node_name.lower().startswith(name):
-			return True
-	return False
+	return any(
+		node_name.lower().startswith(name)
+		for name in ["g_block_", "start", "homebase", "colshape"]
+	)
 
 def setup_collisions(scn, scene_physics, res, vtx_layout, coll_id, _node):
 	if _node.HasObject() and is_node_name_collision_enabled(_node.GetName()):
@@ -16,7 +16,12 @@ def setup_collisions(scn, scene_physics, res, vtx_layout, coll_id, _node):
 		mat_collision_box = hg.TransformationMat4(hg.GetT(_node.GetTransform().GetWorld()), hg.GetR(_node.GetTransform().GetWorld()))
 
 		# print(node.GetName() + ": " + str(size.x) + ", " + str(size.y) + ", " + str(size.z) + "  - Instance size : " + str(instance_size.x) + ", " + str(instance_size.y) + ", " + str(instance_size.z))
-		box_collision_ref = res.AddModel('col_shape_' + str(coll_id), hg.CreateCubeModel(vtx_layout, instance_size.x, instance_size.y, instance_size.z))
+		box_collision_ref = res.AddModel(
+			f'col_shape_{str(coll_id)}',
+			hg.CreateCubeModel(
+				vtx_layout, instance_size.x, instance_size.y, instance_size.z
+			),
+		)
 		collision_node = hg.CreatePhysicCube(scn, instance_size, mat_collision_box, box_collision_ref, [], 0)
 		collision_node.GetRigidBody().SetType(hg.RBT_Static)
 		collision = collision_node.GetCollision(1)
